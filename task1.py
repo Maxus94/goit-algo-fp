@@ -60,12 +60,48 @@ class LinkedList:
             print(current.data)
             current = current.next
 
-    def reverse(self):
-        print()
-        print(self.head.data)
-        if self.head is None:
-            return "List is empty"
-        
+    def reverse(self):        
+        prev = None
+        current = self.head
+        while current is not None:
+            next_node = current.next
+            current.next = prev
+            prev = current
+            current = next_node
+        self.head = prev
+
+
+    def sort(self):
+        i = 1
+        current = self.head        
+        while current.next.next:
+            tmp = current.next
+            # current = current.next
+            j = i - 1
+            current = self.head
+            while j >= 0:                
+                prev_node = current
+                current_node = current.next
+                if prev_node.value > current_node.value:
+                    prev_node.value = current_node.value
+                j -= 1
+            
+
+
+                # tmp.data < current.next.next.data:
+            # print(current.next.next.data)
+                
+            
+
+            
+        # for i in range(1, len(lst)):
+        #     key = lst[i]
+        #     j = i-1
+        #     while j >=0 and key < lst[j] :
+        #         lst[j+1] = lst[j]
+        #         j -= 1
+        #     lst[j+1] = key 
+
 
         
 
@@ -89,6 +125,10 @@ print("Зв'язний список:")
 llist.print_list()
 
 llist.reverse()
+print()
+llist.print_list()
+print()
+llist.sort()
 
 # # Видаляємо вузол
 # llist.delete_node(10)
