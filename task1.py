@@ -70,21 +70,54 @@ class LinkedList:
             current = next_node
         self.head = prev
 
-
+    def len_list(self):        
+        if self.head:
+            len = 1
+        else: return 
+        current = self.head
+        while current.next is not None:
+            current = current.next
+            len += 1
+        return len
+    
+    def get_middle(self):
+        if self.head is None:
+            return self.head
+        slow = self.head
+        fast = self.head
+        while fast.next is not None and fast.next.next is not None:
+            slow = slow.next
+            fast = fast.next.next
+        return slow
+    
     def sort(self):
-        i = 1
-        current = self.head        
-        while current.next.next:
-            tmp = current.next
-            # current = current.next
-            j = i - 1
-            current = self.head
-            while j >= 0:                
-                prev_node = current
-                current_node = current.next
-                if prev_node.value > current_node.value:
-                    prev_node.value = current_node.value
-                j -= 1
+        if len(self) <= 1:
+            return self
+
+        mid = self.get_middle()
+        
+        cur = self.head
+        left_half.head = self.head
+        while cur.next is not None and cur.next != mid:
+        left_half
+        left_half = arr[:mid]
+        right_half = arr[mid:]
+    
+
+    # def sort(self):
+    #     i = 1
+    #     current = self.head        
+    #     while current.next.next:
+    #         tmp = current.next
+    #         # current = current.next
+    #         j = i - 1
+    #         current = self.head
+    #         while j >= 0:                
+    #             prev_node = current
+    #             current_node = current.next
+    #             if prev_node.value > current_node.value:
+    #                 prev_node.value = current_node.value
+    #             j -= 1
             
 
 
@@ -128,7 +161,8 @@ llist.reverse()
 print()
 llist.print_list()
 print()
-llist.sort()
+print(llist.len_list())
+# llist.sort()
 
 # # Видаляємо вузол
 # llist.delete_node(10)
