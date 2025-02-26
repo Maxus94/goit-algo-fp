@@ -8,6 +8,8 @@ class LinkedList:
     def __init__(self):
         self.head = None
 
+         
+
     def insert_at_beginning(self, data):
         new_node = Node(data)
         new_node.next = self.head
@@ -91,17 +93,46 @@ class LinkedList:
         return slow
     
     def sort(self):
-        if len(self) <= 1:
+        if self.head is None or self.head.next is None:
+        # if len(self) <= 1:
             return self
 
         mid = self.get_middle()
         
         cur = self.head
+        left_half = LinkedList()
         left_half.head = self.head
-        while cur.next is not None and cur.next != mid:
-        left_half
-        left_half = arr[:mid]
-        right_half = arr[mid:]
+        # left_current = left_half.head
+        print("Inside sort")
+        print(left_half.head.data)
+        while cur.next is not None and cur.next.data != mid.data:
+            left_half.next = cur.next
+            cur = cur.next
+            print(left_half.next.data)
+        # left_half = arr[:mid]
+        # right_half = arr[mid:]
+        # return merge(merge_sort(left_half), merge_sort(right_half))
+        left_half.next = None
+        print()
+        print(cur.next.data)
+
+        print()
+
+        right_half = LinkedList()
+        right_half.head = cur
+        while cur.next is not None:
+            right_half.next = cur.next
+            cur = cur.next
+            print(cur.data)
+        
+        print()
+
+        print("Lists")
+        left_half.print_list()
+        print()
+        right_half.print_list()
+
+        return right_half
     
 
     # def sort(self):
@@ -161,7 +192,11 @@ llist.reverse()
 print()
 llist.print_list()
 print()
-print(llist.len_list())
+print("Left")
+
+l = llist.sort()
+print()
+l.print_list()
 # llist.sort()
 
 # # Видаляємо вузол
