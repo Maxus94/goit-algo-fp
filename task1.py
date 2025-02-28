@@ -89,41 +89,75 @@ class LinkedList:
             fast = fast.next.next
         return slow
     
-    def sort(self):
+    def merge_sort(self):
         if self.head is None or self.head.next is None:        
             return self
 
         mid = self.get_middle()        
         cur = self.head        
-        left_half = LinkedList()
-        left_half.head = self.head        
-        print("Inside sort")
-        print("Left head", left_half.head.data)
-        while cur.next is not None and not cur.next.data == mid.data:            
-            left_half.next = cur.next
-            cur = cur.next            
-            print("Left element", left_half.next.data)        
-        left_half.next = None
-        print("Element after left end:", left_half.next)        
-        print("Middle", cur.next.data, "=", mid.data)        
-        cur = cur.next        
-        right_half = LinkedList()        
-        right_half.head = cur        
-        print("Right head", right_half.head.data)
-        while cur.next is not None:
-            right_half.next = cur.next
-            cur = cur.next
-            print("Right element", cur.data)
-        
-        print()
+        left_half = LinkedList()        
+        left_half.insert_at_end(cur.data)
 
+        while cur.next is not None and not cur.data == mid.data:            
+            cur = cur.next            
+            left_half.insert_at_end(cur.data)                                
+            
+        left_half.next = None
+        cur = cur.next
+        right_half = LinkedList()
+        if cur is not None:
+            right_half.insert_at_end(cur.data)
+        
+            while cur.next is not None:
+                right_half.next = cur.next
+                right_half.insert_at_end(cur.next.data)
+                cur = cur.next            
+        
         print("Left list")        
         left_half.print_list()
         print("Right list")
         right_half.print_list()
 
-        return left_half
+        sorted_list = self.merge_sorted(left_half.merge_sort(), right_half.merge_sort())
+        return sorted_list
     
+    def merge_sorted(left, right):
+        if left is None:
+            return right
+        
+        if right is None:
+            return left
+        
+        merged = LinkedList()
+        left_index = 0
+        right_index = 0
+        left_cur = left.head
+        right_cur = right.head
+
+        # Спочатку об'єднайте менші елементи
+        while left_index < left.len_list and right_index < right.len_list:
+            if left_cur <= right_cur:
+                merged.insert_at_end(left_cur)
+                left_cur = left_cur.next
+                left_index += 1
+            else:
+                merged.insert_at_end(right_cur)
+                right_cur = right_cur.next
+                right_index += 1
+
+        # Якщо в лівій або правій половині залишилися елементи, 
+		# додайте їх до результату
+        while left_index < len(left):
+            merged.insert_at_end(left_cur)            
+            left_cur = left_cur.next
+            left_index += 1
+
+        while right_index < len(right):
+            merged.insert_at_end(right_cur)
+            right_cur = right_cur.next
+            right_index += 1
+
+        return merged
 
 llist = LinkedList()
 llist.insert_at_beginning(5)
@@ -136,6 +170,6 @@ print("Зв'язний список:")
 llist.print_list()
 
 print()
-l = llist.sort()
+l = llist.merge_sort()
 print("Left list")
 l.print_list()
