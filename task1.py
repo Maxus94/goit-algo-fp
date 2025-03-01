@@ -69,6 +69,7 @@ class LinkedList:
             current = next_node
         self.head = prev
 
+    @staticmethod
     def len_list(self):        
         if self.head:
             len = 1
@@ -89,6 +90,7 @@ class LinkedList:
             fast = fast.next.next
         return slow
     
+    @staticmethod
     def merge_sort(self):
         if self.head is None or self.head.next is None:        
             return self
@@ -118,9 +120,12 @@ class LinkedList:
         print("Right list")
         right_half.print_list()
 
-        sorted_list = self.merge_sorted(left_half.merge_sort(), right_half.merge_sort())
+        # sorted_list = self.merge_sorted(left_half.merge_sort(), right_half.merge_sort())
+        # sorted_list = self.merge_sorted(LinkedList.merge_sort(left_half), LinkedList.merge_sort(right_half))
+        sorted_list = LinkedList.merge_sorted(LinkedList.merge_sort(left_half), LinkedList.merge_sort(right_half))
         return sorted_list
     
+    @staticmethod
     def merge_sorted(left, right):
         if left is None:
             return right
@@ -135,8 +140,10 @@ class LinkedList:
         right_cur = right.head
 
         # Спочатку об'єднайте менші елементи
-        while left_index < left.len_list and right_index < right.len_list:
-            if left_cur <= right_cur:
+        # while left_index < left.len_list and right_index < right.len_list:
+        while left_index < LinkedList.len_list(left) and right_index < LinkedList.len_list(right):
+            print(left_cur.data, right_cur.data)
+            if int(left_cur.data) <= int(right_cur.data):
                 merged.insert_at_end(left_cur)
                 left_cur = left_cur.next
                 left_index += 1
@@ -147,12 +154,14 @@ class LinkedList:
 
         # Якщо в лівій або правій половині залишилися елементи, 
 		# додайте їх до результату
-        while left_index < len(left):
+        # while left_index < len(left):
+        while left_index < LinkedList.len_list(left):
             merged.insert_at_end(left_cur)            
             left_cur = left_cur.next
             left_index += 1
 
-        while right_index < len(right):
+        # while right_index < len(right):
+        while right_index < LinkedList.len_list(right):
             merged.insert_at_end(right_cur)
             right_cur = right_cur.next
             right_index += 1
@@ -170,6 +179,7 @@ print("Зв'язний список:")
 llist.print_list()
 
 print()
-l = llist.merge_sort()
+# l = llist.merge_sort()
+l = LinkedList.merge_sort(llist)
 print("Left list")
 l.print_list()
