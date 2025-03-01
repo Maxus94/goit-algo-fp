@@ -41,8 +41,16 @@ def draw_tree(tree_root):
     nx.draw(tree, pos=pos, labels=labels, arrows=False, node_size=2500, node_color=colors)
     plt.show()
 
-def draw_heap(heap, index = 0):
-    pass
+def build_heap_tree(heap, index = 0):
+    if index >= len(heap):
+        return None
+    root = Node(heap[index])
+    left_index = 2 * index + 1
+    right_index = 2 * index + 2
+    root.left = build_heap_tree(heap, left_index)
+    root.right = build_heap_tree(heap, right_index)
+    return root
+    
 
 
 # Створення дерева
@@ -59,3 +67,4 @@ def draw_heap(heap, index = 0):
 heap_list = [1, 3, 5, 7, 9, 2]
 heapq.heapify(heap_list)
 print(len(heap_list))
+draw_tree(build_heap_tree(heap_list))
