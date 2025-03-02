@@ -9,7 +9,7 @@ def simulate_dice_rolls(rolls_number):
         second = random.randint(1, 6)        
         numbers[first + second] += 1
 
-    print(f"Ймовірності при кількості експериментів {rolls_number}")
+    print(f"\n\n\nЙмовірності при кількості експериментів {rolls_number}\n")
     print("{:<5} {:<1} {:<10}".format("Сума", '|', "Ймовірність"))
     print("-" * 20)
     for number in range(2, 13):
