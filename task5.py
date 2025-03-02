@@ -5,19 +5,18 @@ import matplotlib.pyplot as plt
 
 from collections import deque
 
-
 class Node:
     def __init__(self, key, color="skyblue"):
         self.left = None
         self.right = None
         self.val = key
-        self.color = color # Додатковий аргумент для зберігання кольору вузла
-        self.id = str(uuid.uuid4())#  Унікальний ідентифікатор для кожного вузла
+        self.color = color 
+        self.id = str(uuid.uuid4())
 
 
 def add_edges(graph, node, pos, x=0, y=0, layer=1):
     if node is not None:
-        graph.add_node(node.id, color=node.color, label=node.val) # Використання id та збереження значення вузла
+        graph.add_node(node.id, color=node.color, label=node.val) 
         if node.left:
             graph.add_edge(node.id, node.left.id)
             l = x - 1 / 2 ** layer
@@ -30,17 +29,19 @@ def add_edges(graph, node, pos, x=0, y=0, layer=1):
             r = add_edges(graph, node.right, pos, x=r, y=y - 1, layer=layer + 1)
     return graph
 
-def draw_tree(tree_root):
+def draw_tree(tree_root, name = ''):
     tree = nx.DiGraph()
     pos = {tree_root.id: (0, 0)}
     tree = add_edges(tree, tree_root, pos)
 
     colors = [node[1]['color'] for node in tree.nodes(data=True)]    
-    labels = {node[0]: node[1]['label'] for node in tree.nodes(data=True)} # Використовуйте значення вузла для міток
+    labels = {node[0]: node[1]['label'] for node in tree.nodes(data=True)} 
 
     plt.figure(figsize=(8, 5))
-    nx.draw(tree, pos=pos, labels=labels, arrows=False, node_size=2500, node_color=colors)
+    nx.draw(tree, pos=pos, labels=labels, arrows=False, node_size=2500, node_color=colors,)
+    plt.figtext(0.05, 0.95, name)
     plt.show()
+
 
 def count_nodes(node):
     if node is None:
@@ -52,7 +53,6 @@ def generate_colors(step, nodes_number):
     mul = 255 // nodes_number
     new_color = [base_color[0] + mul * step, base_color[1], base_color[2] - mul * step]
     return f'#{new_color[0]:02x}{new_color[1]:02x}{new_color[2]:02x}'
-
 
 def dfs_visualize(root, nodes_number):
     visited = set()
@@ -86,10 +86,6 @@ def bfs_visualize(root, nodes_number):
                 node_neighbors.add(node.right)
             queue.extend(node_neighbors - visited)
 
-
-
-
-# Створення дерева
 root = Node(0)
 root.left = Node(4)
 root.left.left = Node(5)
@@ -99,9 +95,7 @@ root.right.left = Node(3)
 
 dfs_visualize(root, count_nodes(root))
 
-# Відображення дерева
-draw_tree(root)
-# print(generate_colors(2, 8))
+draw_tree(root, "DFS")
 
 bfs_visualize(root, count_nodes(root))
-draw_tree(root)
+draw_tree(root, "BFS")
