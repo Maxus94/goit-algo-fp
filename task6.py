@@ -37,11 +37,31 @@ def greedy_algorithm(items, budget):
     return total_calories, budget - remaining_budget, chosen_items
 
 def dynamic_programming(items, budget):
-    dp_table = [[0 for x in range(budget + 1)] for y in range(len(items) + 1)]
-
+    item_names = list(items.keys())
     chosen_items = []
+    dp_table = [[0 for x in range(budget + 1)] for y in range(len(items) + 1)]
+    
+    # K = [[0 for w in range(W + 1)] for i in range(n + 1)]
+
+    # будуємо таблицю K знизу вгору
+    for i in range(len(items) + 1):
+        for b in range(budget + 1):
+            if i == 0 or b == 0:
+                dp_table[i][b] = 0            
+            elif items[item_names[i - 1]]["cost"] <= b:
+                dp_table[i][b] = max(items[item_names[i - 1]]["calories"] + dp_table[i - 1][b - items[item_names[i - 1]]["cost"]], dp_table[i - 1][b])                
+            else:
+                dp_table[i][b] = dp_table[i - 1][b]                
+    
+    print(dp_table[len(items)])
+
     temp_budget = budget
 
-    return dp_table[len(items)][budget], budget - temp_budget, chosen_items
+    return dp_table[len(items)][budget], chosen_items # , budget - temp_budget
 
-print(greedy_algorithm(items, 100))
+# print(greedy_algorithm(items, 100))
+# print()
+print(dynamic_programming(items, 100))
+
+# item_names = list(items.keys())
+# print(items[item_names[2]])

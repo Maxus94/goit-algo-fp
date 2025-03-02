@@ -69,6 +69,7 @@ class LinkedList:
             current = next_node
         self.head = prev
 
+    @staticmethod
     def len_list(self):        
         if self.head:
             len = 1
@@ -89,6 +90,7 @@ class LinkedList:
             fast = fast.next.next
         return slow
     
+    @staticmethod
     def merge_sort(self):
         if self.head is None or self.head.next is None:        
             return self
@@ -111,16 +113,12 @@ class LinkedList:
             while cur.next is not None:
                 right_half.next = cur.next
                 right_half.insert_at_end(cur.next.data)
-                cur = cur.next            
+                cur = cur.next                    
         
-        print("Left list")        
-        left_half.print_list()
-        print("Right list")
-        right_half.print_list()
-
-        sorted_list = self.merge_sorted(left_half.merge_sort(), right_half.merge_sort())
+        sorted_list = LinkedList.merge_sorted(LinkedList.merge_sort(left_half), LinkedList.merge_sort(right_half))
         return sorted_list
     
+    @staticmethod
     def merge_sorted(left, right):
         if left is None:
             return right
@@ -134,26 +132,23 @@ class LinkedList:
         left_cur = left.head
         right_cur = right.head
 
-        # Спочатку об'єднайте менші елементи
-        while left_index < left.len_list and right_index < right.len_list:
-            if left_cur <= right_cur:
-                merged.insert_at_end(left_cur)
+        while left_index < LinkedList.len_list(left) and right_index < LinkedList.len_list(right):            
+            if int(left_cur.data) <= int(right_cur.data):
+                merged.insert_at_end(left_cur.data)
                 left_cur = left_cur.next
                 left_index += 1
             else:
-                merged.insert_at_end(right_cur)
+                merged.insert_at_end(right_cur.data)
                 right_cur = right_cur.next
                 right_index += 1
 
-        # Якщо в лівій або правій половині залишилися елементи, 
-		# додайте їх до результату
-        while left_index < len(left):
-            merged.insert_at_end(left_cur)            
+        while left_index < LinkedList.len_list(left):
+            merged.insert_at_end(left_cur.data)            
             left_cur = left_cur.next
             left_index += 1
-
-        while right_index < len(right):
-            merged.insert_at_end(right_cur)
+        
+        while right_index < LinkedList.len_list(right):
+            merged.insert_at_end(right_cur.data)
             right_cur = right_cur.next
             right_index += 1
 
@@ -166,10 +161,35 @@ llist.insert_at_beginning(15)
 llist.insert_at_end(20)
 llist.insert_at_end(25)
 
-print("Зв'язний список:")
+print("Зв'язний список1:")
 llist.print_list()
 
+llist2 = LinkedList()
+llist2.insert_at_beginning(7)
+llist2.insert_at_beginning(19)
+llist2.insert_at_beginning(15)
+llist2.insert_at_end(27)
+llist2.insert_at_end(22)
+
+print("Зв'язний список2:")
+llist2.print_list()
+
 print()
-l = llist.merge_sort()
-print("Left list")
+print("Зв'язний список1 відсортований:")
+l = LinkedList.merge_sort(llist)
 l.print_list()
+
+print()
+print("Зв'язний список2 відсортований:")
+l2 = LinkedList.merge_sort(llist2)
+l2.print_list()
+
+l_merged = LinkedList.merge_sorted(l, l2)
+print()
+print("Зв'язний список загальний відсортований:")
+l_merged.print_list()
+
+print()
+print("Зв'язний список загальний реверсований:")
+l_merged.reverse()
+l_merged.print_list()
