@@ -1,42 +1,30 @@
 import heapq
 
 def dijkstra(graph, start):
-    # Ініціалізація відстаней та множини невідвіданих вершин
-    distances = {vertex: float('infinity') for vertex in graph}
+    distances = {vertex: float('inf') for vertex in graph}
     distances[start] = 0
-    pq = [0, start]
+    shortest_paths = {vertex: [] for vertex in graph}
+    shortest_paths[start] = [start]    
+ 
+    pq = [(0, start)]
+    
     while pq:
-        currnt_distance, current_vertex = heapq.heappop(pq)
-    # unvisited = list(graph.keys())
+        current_distance, current_vertex = heapq.heappop(pq)             
+        if current_distance <= distances[current_vertex]:       
+            for neighbor, weight in graph[current_vertex]:
+                distance = current_distance + weight            
+                if distance < distances[neighbor]:
+                    distances[neighbor] = distance
+                    shortest_paths[neighbor] = shortest_paths[current_vertex] + [neighbor]
+                    heapq.heappush(pq, (distance, neighbor))    
+    return distances, shortest_paths
 
-    # while unvisited:
-        # Знаходження вершини з найменшою відстанню серед невідвіданих
-        # current_vertex = min(unvisited, key=lambda vertex: distances[vertex])
-
-        # Якщо поточна відстань є нескінченністю, то ми завершили роботу
-        if distances[current_vertex] == float('infinity'):
-            break
-
-        for neighbor, weight in graph[current_vertex].items():
-            distance = distances[current_vertex] + weight
-
-            # Якщо нова відстань коротша, то оновлюємо найкоротший шлях
-            if distance < distances[neighbor]:
-                distances[neighbor] = distance
-
-        # Видаляємо поточну вершину з множини невідвіданих
-        unvisited.remove(current_vertex)
-
-    return distances
-
-# Приклад графа у вигляді словника
 graph = {
-    'A': {'B': 5, 'C': 10},
-    'B': {'A': 5, 'D': 3},
-    'C': {'A': 10, 'D': 2},
-    'D': {'B': 3, 'C': 2, 'E': 4},
-    'E': {'D': 4}
+    'A': [('B', 5), ('C', 10)],
+    'B': [('A', 5), ('D', 3)],
+    'C': [('A', 10), ('D', 2)],
+    'D': [('B', 3), ('C', 2), ('E', 4)],
+    'E': [('D', 4)]
 }
 
-# Виклик функції для вершини A
-print(dijkstra(graph, 'A'))
+print(dijkstra(graph, "A"))

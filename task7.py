@@ -14,7 +14,7 @@ def simulate_dice_rolls(rolls_number):
     print("-" * 20)
     for number in range(2, 13):
         numbers[number] = numbers[number] / rolls_number
-        print("{:<5} {:<1} {:<10}".format(number, '|', numbers[number]))            
+        print("{:<5} {:<1} {:<10}".format(number, '|', f"{numbers[number]*100:.2f}%"))            
     return(numbers)
 
     
